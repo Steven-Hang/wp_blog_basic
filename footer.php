@@ -1,25 +1,32 @@
-<!-- Footer -->
-<div class="footer">
-   <h2>Recent Posts</h2>
-      
-      <ul>
-         <?php
-            $args = array( 'numberposts' => '3' );
-            $recent_posts = wp_get_recent_posts( $args );
-            foreach( $recent_posts as $recent ){
-               echo '<li><a href="' . get_permalink($recent["ID"]) . '">' .   $recent["post_title"].'</a> </li> ';
-            }
-            wp_reset_query();
-         ?>
-      </ul>
-
-    <h2>Archives</h2>
-    <?php wp_get_archives('type=yearly'); ?>
-    <h2>Categories</h2>
-      <?php the_category(', '); ?>
-    <br>
- 
-<?php wp_footer();?>
-</div>
-    </body>
+<footer class="site-footer" role="footer">
+<div class="footer-container">
+    <div class="footer_info">
+        <dl class="footer_links">
+            <dt> Organisational Info </dt>
+            <dd> <?php wp_nav_menu (
+						array(
+                            'theme_location' => 'top-menu'
+                    ));?> </dd>
+        </dl>
+    </div>
+    <div class="footer_info">
+        <dl class="footer_links">
+            <dt> Socials </dt>
+            <dd> Section Link Here </dd>
+        </dl>
+    </div>
+    <div class="footer_info">
+        <dl class="footer_links">
+            <dt>  </dt>
+        </dl>
+    </div>
+        <ul id="footer-credit">
+            <li><a href="https://wordpress.com/"> Powered by WordPress</a></li>
+            <span class="sep"> / <span>
+            <li><a href="https://github.com/Steven04H">💕 by Me</a></li>
+        </ul>
+        </div>
+    </div>
+</footer>
+</body>
 </html>

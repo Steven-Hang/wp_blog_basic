@@ -1,69 +1,94 @@
-<?php get_header(); ?>
+<?php 
+/**
+ * 
+ *
+ * The main template file.
+ *
+ * This is the most generic template file in a WordPress theme
+ * and one of the two required files for a theme (the other being style.css).
+ * It is used to display a page when nothing more specific matches a query.
+ * E.g., it puts together the home page when no home.php file exists.
+ * Learn more: http://codex.wordpress.org/Template_Hierarchy
+ */
+get_header(); ?>
 
-<div id="slider">
-
-   <div class="slides">
-      <!-- First slide --> 
-      <div class="slider">
-         <div class="images"> 
-         <img src="<?php bloginfo('template_url'); ?>/images/0267530001512848036.png"/>
-         </div>
-      </div>
-      <!-- Second slide -->
-      <div class="slider">
-         <div class="images"> 
-         <img src="<?php bloginfo('template_url'); ?>/images/0267530001512848036.jpeg"/>
-         </div>
-      </div>
-      <!-- Third slide --> 
-      <div class="slider">
-         <div class="images"> 
-         <img src="<?php bloginfo('template_url'); ?>/images/933.jpg"/>
-         </div>
-      </div>
-      <!-- Fourth slide --> 
-      <div class="slider">
-         <div class="images"> 
-         <img src="<?php bloginfo('template_url'); ?>/images/820185.jpg"/>
-         </div>
-      </div>
-   </div>
-</div>
-<div class="box"></div>
-
-</div>
+<div id="page" class="hfeed site">
 <!-- Featured Post -->
-<div class="feature" style="height: 45em; background: pink">
-   <span id=feature-title>Featured Story: Cont. </span>
+<?php
+  $args = array(
+        'posts_per_page' => 1,
+        'meta_key' => 'meta-checkbox',
+        'meta_value' => 'yes'
+    );
+    $featured = new WP_Query($args);
+ 
+if ($featured->have_posts()): while($featured->have_posts()): $featured->the_post(); ?>
+<section class="featured-article-area">
+   <?php if (has_post_thumbnail()) : ?>
+   <a href="<?php the_permalink(); ?>">
+    <?php the_post_thumbnail(); ?>
+    </a>
+   <div class="featured-text-content-area">
+         <div class="featured-text">
+         <h1 id="featured_heading"><?php the_title(); ?></h1>
+         <?php the_excerpt();?></div>
+   </div>
+</section> <!-- End featured Section -->
+
+<?php
+endif;
+endwhile; else:
+endif;
+?>
+<main class="page-container ">
+   <section class="article-area  article-area-posts">
+      <?php while ( have_posts() ) : the_post(); ?>
+         <?php get_template_part( 'content', get_post_format() ); ?>
+               <?php endwhile; ?>
+      </section>
+
+      <?php get_sidebar(); ?>
+      <div class="lnf-area"><h4>Scroll for more content</h4> &nbsp<div class="lds-ring"><div></div></div> 
+    </div>
+
+</main>
 </div>
-<!-- The flexible grid (content) -->
-
-
-<div class="row">
-  
-<div class="main">   
-         <?php if (have_posts()) : while(have_posts()) : the_post();?>
-
-         <div class="card">
-            <div class="container">
-               <div class="main">
-                  <hr><br>
-                  <a href="<?php the_permalink();?>"><h1><?php the_title();?></h1></a><br><br>
-                      <?php if(has_post_thumbnail()):?>
-                      <img src="<?php the_post_thumbnail_url('smallest');?>">
-                      <?php endif ?>
-               </div>
-               <div class="side">
-                  <?php the_date( 'd-m-Y', 'Posted: '); ?>
-                  <?php the_excerpt();?>
-               </div>
-               </div>
-            </div>
-            <?php endwhile; endif;?>
-         <?php echo paginate_links(); ?>
-      </div>
-   
-  
-</div>
-
 <?php get_footer(); ?>
+
+<script type="text/javascript">
+    jQuery(document).ready(function ($) {
+        var count = 2;
+        var total = <?php echo $wp_query->max_num_pages; ?>;
+        
+        $(window).scroll(function () {
+            if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+                if (count > total) {
+                    return false;
+                } else {
+                    loadArticle(count);
+                }
+                count++;
+            }
+        });
+
+        function loadArticle(pageNumber) {
+         $('.lnf-area').delay('1000').show();
+            $.ajax({
+                url: "<?php echo admin_url(); ?>admin-ajax.php",
+                type: 'post',
+                data: "action=infinite_scroll&page_no=" + pageNumber + '&loop_file=loop',
+                
+                success : function (response) {
+                    $('.lnf-area').show();
+                  function show_more_articles(){
+                      
+                    $(".article-area-posts").append(response);
+                  };
+                   window.setTimeout( show_more_articles, 2000 ); // 3 seconds
+                   $('.lnf-area').fadeOut();
+                }
+            });
+            return false;
+        }
+    });
+</script>
