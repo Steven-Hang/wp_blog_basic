@@ -268,7 +268,7 @@ figcaption{
 }
 .widget-area{
   grid-area: sidebar;
-  min-width: 30vw;
+  min-width: 20em;
 }
 
 .widget-container{
@@ -324,7 +324,7 @@ figcaption{
     min-height: 100vh;
     margin: 0 auto;
   }
-  .date::before{
+  .date-published::before{
     content: "\f073";
     font-family: "Font Awesome 5 Free"
    
@@ -333,12 +333,11 @@ figcaption{
   .article-area{
     grid-area: content;
     min-width: 45vw;
-    margin-left: 60px;
   }
 
   article {
     text-align: left;
-    padding: 20px;
+    margin: 20px;
   }
     .article-title{
       text-transform: capitalize;
@@ -369,12 +368,20 @@ figcaption{
 
 @media (max-width: 1023px){
     .featured-text p{
-    position: absolute;
-    left: -10000px;
-    width: 1px;
-    height: 1px;
-    top: auto;
-    overflow: hidden;
+      position: absolute;
+      left: -10000px;
+      width: 1px;
+      height: 1px;
+      top: auto;
+      overflow: hidden;
+    }
+    .search-wrapper{
+      position: absolute;
+      left: -10000px;
+      width: 1px;
+      height: 1px;
+      top: auto;
+      overflow: hidden;
     }  
   }
 
@@ -420,7 +427,7 @@ padding: 40px 30px;
 /* Single Page */
   
 #single_header_title{
-  width: 100vmin;
+  max-width: 80vw;
   font-size: 3rem;
   font-weight: 700;
   text-transform: capitalize;
@@ -440,16 +447,30 @@ figure {
 .share-social-area ul li{
  display: inline;
 }
-
+.content-img-area img{
+  max-width: 100%;
+  display: block;
+  height: auto;
+  margin: 0 !important;
+}
 /* Comment Section */
 
   .comments-area {
     margin: 0;
   }
-  
-  .comment-list + .comment-respond,
-  .comment-navigation + .comment-respond {
-    padding-top: 1.75em;
+  .comment-respond{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .page-header{
+    display: flex;
+    flex-direction: inherit;
+    justify-content: flex-start;
+    align-items: center;
+    margin-left: 19vw;
+    margin-top: 5vh;
   }
   
   .comments-title,
@@ -575,7 +596,10 @@ figure {
   }
   
   .comment-form {
+    display: block;
     padding-top: 1.75em;
+    max-width:100%;
+    height: auto;
   }
   
   .comment-form label {
@@ -590,7 +614,7 @@ figure {
   }
   
   .comment-list .comment-form {
-    padding-bottom: 1.75em;
+    padding-left: 1.75em;
   }
   
   .comment-notes,
